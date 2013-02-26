@@ -63,7 +63,6 @@ int main (int argc, char **argv)
 		
 	}
 	
-	
 	// Matriz x = gt*g, matriz nxn
 	gsl_matrix *x = gsl_matrix_calloc(nColumnas,nColumnas);
 	int j = 0;
@@ -86,6 +85,28 @@ int main (int argc, char **argv)
 	{
 		printf("%f  %f  %f\n", gsl_matrix_get(x, i, 0), gsl_matrix_get(x,i,1), gsl_matrix_get(x,i,2));
 	}
+	
+	// Matriz inversa de x => xinv
+	gsl_matrix *xinv = gsl_matrix_calloc(nColumnas,nColumnas);
+	gsl_permutation *perm = gsl_permutation_alloc(nColumnas);
+
+		// Descomposicion LU
+	int ent;
+	gsl_linalg_LU_decomp(x,perm,&ent);
+
+		// Inversa
+	gsl_linalg_LU_invert(x,perm,xinv);
+
+	for (i = 0; i<nColumnas; i++)
+	{
+		printf("%f  %f  %f\n", gsl_matrix_get(xinv, i, 0), gsl_matrix_get(xinv,i,1), gsl_matrix_get(xinv,i,2));
+	}
+
+	
+
+	
+	
+	
 }
 
 void contarDatos(int *nDatos, char nombreArchivo[])
