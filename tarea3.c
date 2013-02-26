@@ -46,7 +46,7 @@ int main (int argc, char **argv)
 	}
 
 	// Matriz g y su transpuesta gt
-	int nColumnas = 3;
+	int nColumnas = 3; // Coincide con las variables de la regresión
 	int nFilas = nDatos;
 	gsl_matrix *g = gsl_matrix_calloc(nFilas,nColumnas);
 	gsl_matrix *gt = gsl_matrix_calloc(nColumnas,nFilas); //En el orden contrario
@@ -125,8 +125,28 @@ int main (int argc, char **argv)
 		printf("%f  %f  %f\n", gsl_matrix_get(y, i, 0), gsl_matrix_get(y,i,1), gsl_matrix_get(y,i,2));
 	}
 
+	// Vector de salida m
+	gsl_vector *m = gsl_vector_calloc(nColumnas);
+	j = 0;
+	h = 0;
+	suma = 0;
+	for (i = 0; i < nColumnas; i++) // Filas
+	{
+		suma = 0;
+		for (h = 0; h < nFilas; h++)
+		{
+			suma += gsl_matrix_get(y,i,h)*gsl_vector_get(vPosicion,h);
+		}
+		gsl_vector_set(m, i, suma);
+	}
 	
-	
+
+	for (i = 0; i<nColumnas; i++)
+	{
+		printf("%f\n", gsl_vector_get(m, i));
+	}
+	return 0;
+
 	
 }
 
