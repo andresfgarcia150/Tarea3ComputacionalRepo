@@ -81,10 +81,10 @@ int main (int argc, char **argv)
 		}
 	}
 	
-	for (i = 0; i<nColumnas; i++)
-	{
-		printf("%f  %f  %f\n", gsl_matrix_get(x, i, 0), gsl_matrix_get(x,i,1), gsl_matrix_get(x,i,2));
-	}
+	//for (i = 0; i<nColumnas; i++)
+	//{
+	//	printf("%f  %f  %f\n", gsl_matrix_get(x, i, 0), gsl_matrix_get(x,i,1), gsl_matrix_get(x,i,2));
+	//}
 	
 	// Matriz inversa de x => xinv
 	gsl_matrix *xinv = gsl_matrix_calloc(nColumnas,nColumnas);
@@ -97,10 +97,10 @@ int main (int argc, char **argv)
 		// Inversa
 	gsl_linalg_LU_invert(x,perm,xinv);
 
-	for (i = 0; i<nColumnas; i++)
-	{
-		printf("%f  %f  %f\n", gsl_matrix_get(xinv, i, 0), gsl_matrix_get(xinv,i,1), gsl_matrix_get(xinv,i,2));
-	}
+	//for (i = 0; i<nColumnas; i++)
+	//{
+	//	printf("%f  %f  %f\n", gsl_matrix_get(xinv, i, 0), gsl_matrix_get(xinv,i,1), gsl_matrix_get(xinv,i,2));
+	//}
 
 	// Matriz y = xinv * gt
 	gsl_matrix *y = gsl_matrix_calloc(nColumnas,nFilas);
@@ -120,10 +120,10 @@ int main (int argc, char **argv)
 		}
 	}
 
-	for (i = 0; i<nColumnas; i++)
-	{
-		printf("%f  %f  %f\n", gsl_matrix_get(y, i, 0), gsl_matrix_get(y,i,1), gsl_matrix_get(y,i,2));
-	}
+	//for (i = 0; i<nColumnas; i++)
+	//{
+	//	printf("%f  %f  %f\n", gsl_matrix_get(y, i, 0), gsl_matrix_get(y,i,1), gsl_matrix_get(y,i,2));
+	//}
 
 	// Vector de salida m
 	gsl_vector *m = gsl_vector_calloc(nColumnas);
