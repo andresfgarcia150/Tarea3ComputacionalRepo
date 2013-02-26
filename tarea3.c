@@ -102,7 +102,28 @@ int main (int argc, char **argv)
 		printf("%f  %f  %f\n", gsl_matrix_get(xinv, i, 0), gsl_matrix_get(xinv,i,1), gsl_matrix_get(xinv,i,2));
 	}
 
-	
+	// Matriz y = xinv * gt
+	gsl_matrix *y = gsl_matrix_calloc(nColumnas,nFilas);
+	j = 0;
+	h = 0;
+	suma = 0;
+	for (i = 0; i < nColumnas; i++) //Filas
+	{
+		for (j = 0; j < nFilas; j++) // Columnas
+		{
+			suma = 0;
+			for (h = 0; h < nColumnas; h++)
+			{
+				suma += gsl_matrix_get(xinv,i,h)*gsl_matrix_get(gt,h,j);
+			}
+			gsl_matrix_set(y, i, j, suma);
+		}
+	}
+
+	for (i = 0; i<nColumnas; i++)
+	{
+		printf("%f  %f  %f\n", gsl_matrix_get(y, i, 0), gsl_matrix_get(y,i,1), gsl_matrix_get(y,i,2));
+	}
 
 	
 	
