@@ -18,6 +18,13 @@ int main (int argc, char **argv)
 {
 	// Variables de los vectores
 	int nDatos = 0;
+
+	// Revisa que la entrada sea correcta
+	if (argc !=2)
+	{
+		printf("Debe ingresar el nombre del archivo a analizar\n");
+		exit(1);
+	}
 		
 	// Variable del archivo
 	char nombreArchivo[256];
@@ -160,7 +167,6 @@ void contarDatos(int *nDatos, char nombreArchivo[])
 	
 	*nDatos = numDatos;
 	fclose(archivo);
-
 }
 
 double* cargarVector(int nDatos, int numeroColumna, char nombreArchivo[])
