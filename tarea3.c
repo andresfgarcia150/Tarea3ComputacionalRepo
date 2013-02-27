@@ -81,11 +81,7 @@ int main (int argc, char **argv)
 		}
 	}
 	
-	//for (i = 0; i<nColumnas; i++)
-	//{
-	//	printf("%f  %f  %f\n", gsl_matrix_get(x, i, 0), gsl_matrix_get(x,i,1), gsl_matrix_get(x,i,2));
-	//}
-	
+
 	// Matriz inversa de x => xinv
 	gsl_matrix *xinv = gsl_matrix_calloc(nColumnas,nColumnas);
 	gsl_permutation *perm = gsl_permutation_alloc(nColumnas);
@@ -97,10 +93,6 @@ int main (int argc, char **argv)
 		// Inversa
 	gsl_linalg_LU_invert(x,perm,xinv);
 
-	//for (i = 0; i<nColumnas; i++)
-	//{
-	//	printf("%f  %f  %f\n", gsl_matrix_get(xinv, i, 0), gsl_matrix_get(xinv,i,1), gsl_matrix_get(xinv,i,2));
-	//}
 
 	// Matriz y = xinv * gt
 	gsl_matrix *y = gsl_matrix_calloc(nColumnas,nFilas);
@@ -119,11 +111,6 @@ int main (int argc, char **argv)
 			gsl_matrix_set(y, i, j, suma);
 		}
 	}
-
-	//for (i = 0; i<nColumnas; i++)
-	//{
-	//	printf("%f  %f  %f\n", gsl_matrix_get(y, i, 0), gsl_matrix_get(y,i,1), gsl_matrix_get(y,i,2));
-	//}
 
 	// Vector de salida m
 	gsl_vector *m = gsl_vector_calloc(nColumnas);
@@ -145,9 +132,13 @@ int main (int argc, char **argv)
 	{
 		printf("%f\n", gsl_vector_get(m, i));
 	}
-	return 0;
-
 	
+	// Archivo de salida
+	FILE *archivoSalida;
+	archivoSalida = fopen("parametros_movimiento.dat","w");
+	fprintf(archivoSalida, "%f %f %f", gsl_vector_get(m,0), gsl_vector_get(m,1), gsl_vector_get(m,2));
+	fclose(archivoSalida);
+	return 0;
 }
 
 void contarDatos(int *nDatos, char nombreArchivo[])
