@@ -14,6 +14,7 @@
 void contarDatos(int *nDatos, char nombreArchivo[]);
 gsl_vector* cargarVector(int nDatos, int numeroColumna, char nombreArchivo[]);
 double calcularMedia(int tamanioVector, gsl_vector *vector);
+double calcularCovarianza(int tamanioVector, gsl_vector *v1, gsl_vector *v2, double u1, double u2);
 
 int main (int argc, char **argv)
 {
@@ -52,6 +53,15 @@ int main (int argc, char **argv)
 	u1 = calcularMedia(nDatos, v1);
 	u2 = calcularMedia(nDatos, v2);
 	u3 = calcularMedia(nDatos, v3);
+
+	// Matriz de covarianza
+	double o11, o12, o13, o22, o23, o33;
+	o11 = calcularCovarianza(nDatos, v1, v1, u1, u1);
+	o12 = calcularCovarianza(nDatos, v1, v2, u1, u2);
+	o13 = calcularCovarianza(nDatos, v1, v3, u1, u3);
+	o22 = calcularCovarianza(nDatos, v2, v2, u2, u2);
+	o23 = calcularCovarianza(nDatos, v2, v3, u2, u3);
+	o33 = calcularCovarianza(nDatos, v3, v3, u3, u3);
 }
 
 // Función que cuenta el número de datos a procesar
@@ -61,7 +71,6 @@ void contarDatos(int *nDatos, char nombreArchivo[])
 	int numDatos = 0;
 	FILE *archivo;
 	archivo = fopen(nombreArchivo,"r");
-
 
 	char var = fgetc(archivo);
 	// Cuenta el número de datos
@@ -114,5 +123,17 @@ double calcularMedia(int tamanioVector, gsl_vector *vector)
 		suma += gsl_vector_get(vector, i);
 	}
 	return suma/tamanioVector;
+}
+
+// Calcular covarianza
+double calcularCovarianza(int tamanioVector, gsl_vector *v1, gsl_vector *v2, double u1, double u2)
+{
+	double suma = 0;
+	int i = 0;
+	for (i = 0; i < tamanioVector; i++)
+	{
+		suma += (gsl_vector_get(v1,i)-u1) * (gsl_vector_get(v2,i)-u2);
+	}
+	return suma/(tamanioVector-1);
 }
 
