@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <gsl/gsl_linalg.h>
+#include <gsl/gsl_math.h>
+#include <gsl/gsl_eigen.h>
 //#include <gsl/gsl_matrix.h>
 
 void contarDatos(int *nDatos, char nombreArchivo[]);
@@ -73,6 +75,35 @@ int main (int argc, char **argv)
 	gsl_matrix_set(mCov, 2, 0, o13);
 	gsl_matrix_set(mCov, 2, 1, o23);
 	gsl_matrix_set(mCov, 2, 2, o33);
+
+	// Matriz con valores propios y vectores propios
+	gsl_vector *eval = gsl_vector_alloc (3);
+        gsl_matrix *evec = gsl_matrix_alloc (3, 3);
+     
+        gsl_eigen_symmv_workspace * w = gsl_eigen_symmv_alloc (3);
+       
+        gsl_eigen_symmv (mCov, eval, evec, w);
+     
+        gsl_eigen_symmv_free (w);
+	
+	gsl_eigen_symmv_sort (eval, evec, GSL_EIGEN_SORT_ABS_ASC);
+       
+       {
+         int i;
+     
+         for (i = 0; i < 3; i++)
+           {
+             double eval_i 
+                = gsl_vector_get (eval, i);
+             gsl_vector_view evec_i 
+                = gsl_matrix_column (evec, i);
+     
+             printf ("eigenvalue = %g\n", eval_i);
+             printf ("eigenvector = \n");
+             gsl_vector_fprintf (stdout, 
+                                 &evec_i.vector, "%g");
+           }
+       }
 }
 
 // Función que cuenta el número de datos a procesar
