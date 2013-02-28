@@ -62,6 +62,17 @@ int main (int argc, char **argv)
 	o22 = calcularCovarianza(nDatos, v2, v2, u2, u2);
 	o23 = calcularCovarianza(nDatos, v2, v3, u2, u3);
 	o33 = calcularCovarianza(nDatos, v3, v3, u3, u3);
+
+	gsl_matrix *mCov = gsl_matrix_calloc(3,3);
+	gsl_matrix_set(mCov, 0, 0, o11);
+	gsl_matrix_set(mCov, 0, 1, o12);
+	gsl_matrix_set(mCov, 0, 2, o13);
+	gsl_matrix_set(mCov, 1, 0, o12);
+	gsl_matrix_set(mCov, 1, 1, o22);
+	gsl_matrix_set(mCov, 1, 2, o23);
+	gsl_matrix_set(mCov, 2, 0, o13);
+	gsl_matrix_set(mCov, 2, 1, o23);
+	gsl_matrix_set(mCov, 2, 2, o33);
 }
 
 // Función que cuenta el número de datos a procesar
