@@ -42,15 +42,15 @@ int main (int argc, char **argv)
 	// Lee los datos del archivo
 	gsl_vector *v1 = gsl_vector_calloc(nDatos);
 	v1 = cargarVector(nDatos, 1, nombreArchivo);
-	gsl_vector_fprintf (stdout, v1, "%g");
+	//gsl_vector_fprintf (stdout, v1, "%g");
 
 	gsl_vector *v2 = gsl_vector_calloc(nDatos);
 	v2 = cargarVector(nDatos, 2, nombreArchivo);
-	gsl_vector_fprintf (stdout, v2, "%g");
+	//gsl_vector_fprintf (stdout, v2, "%g");
 
 	gsl_vector *v3 = gsl_vector_calloc(nDatos);
 	v3 = cargarVector(nDatos, 3, nombreArchivo);
-	gsl_vector_fprintf (stdout, v3, "%g");
+	//gsl_vector_fprintf (stdout, v3, "%g");
 	
 	// Medias aritméticas
 	double u1, u2, u3;
@@ -90,19 +90,6 @@ int main (int argc, char **argv)
 	
 	gsl_eigen_symmv_sort (eval, evec, GSL_EIGEN_SORT_ABS_ASC);
 
-{
-int i;
-for (i = 0; i < nVariables; i++)
-{
-double eval_i
-= gsl_vector_get (eval, i);
-gsl_vector_view evec_i = gsl_matrix_column (evec, i);
-printf ("eigenvalue = %g\n", eval_i);
-printf ("eigenvector = \n");
-gsl_vector_fprintf (stdout,
-&evec_i.vector, "%g");
-}
-}
 
        	// Ordenamiento de los vectores propios según los valores propios
 	// Algoritmo de selección
@@ -125,20 +112,7 @@ gsl_vector_fprintf (stdout,
 	}
 	
 
-	{
-int i;
-for (i = 0; i < nVariables; i++)
-{
-double eval_i
-= gsl_vector_get (eval, i);
-gsl_vector_view evec_i = gsl_matrix_column (evec, i);
-printf ("eigenvalue = %g\n", eval_i);
-printf ("eigenvector = \n");
-gsl_vector_fprintf (stdout,
-&evec_i.vector, "%g");
-}
-}
-	// Normalización y de los vectores propios
+	// Normalización de los vectores propios (No es necesario: atrás ya están normalizados)
 	gsl_vector *vx1 = gsl_vector_calloc (nVariables);
 	gsl_vector *vx2 = gsl_vector_calloc (nVariables);
 	gsl_vector *vx3 = gsl_vector_calloc (nVariables);
@@ -151,11 +125,15 @@ gsl_vector_fprintf (stdout,
 	norm1 = calcularNorma(nVariables, vx1);
 	norm2 = calcularNorma(nVariables, vx2);
 	norm3 = calcularNorma(nVariables, vx3);
-	
-	gsl_vector_scale(vx1,1/norm1);
-	gsl_vector_scale(vx2,1/norm2);
-	gsl_vector_scale(vx3,1/norm3);
 
+	// Archivo de salida
+	FILE *archivoSalida;
+	archivoSalida = fopen("autovectores_3D_data.dat","w");
+	fprintf(archivoSalida, "%f %f %f\n", gsl_vector_get(vx1,0), gsl_vector_get(vx1,1), gsl_vector_get(vx1,2));
+	fprintf(archivoSalida, "%f %f %f\n", gsl_vector_get(vx2,0), gsl_vector_get(vx2,1), gsl_vector_get(vx2,2));
+	fprintf(archivoSalida, "%f %f %f\n", gsl_vector_get(vx3,0), gsl_vector_get(vx3,1), gsl_vector_get(vx3,2));
+	fclose(archivoSalida);
+	return 0;
 	
 }
 
